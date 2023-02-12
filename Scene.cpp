@@ -43,8 +43,9 @@ float Scene::TransitionProgress = 0.0f;
 int Scene::sceneFlame = 0;
 
 using std::string;
+using std::wstring;
 
-void Scene::SelfEntry(const std::string &name) {
+void Scene::SelfEntry(const std::string& name) {
 
 	SceneManager::GetInstance().AddScene(name, this);
 }
@@ -81,7 +82,7 @@ void TitleScene_::Update() {
 
 void TitleScene_::Draw() const {
 	DrawUI();
-	String::DrawString(L"PG2 ‚Ð‚å‚¤‚© ‚©‚¾‚¢", "Default", MiddleCentor, Vector2{ 64,64 }, { 0.5f,0.5f }, 0xFFFFFFFF);
+	String::DrawString(L"PG2 13_1 static ‚ß‚ñ‚Î‚Ö‚ñ‚·‚¤", "Default", MiddleCentor, Vector2{ 64,64 }, { 0.5f,0.5f }, 0xFFFFFFFF);
 	String::DrawString(L"Press Space", "Default", DownCentor + Vector2{ 0,64 }, { 32,32 }, { 0.5f,0.5f }, 0xFFFFFFFF);
 }
 
@@ -96,7 +97,7 @@ GameScene_::GameScene_() {
 	AudioManager::GetInstance().Add("GameBGM", "./Resources/Sounds/BGM/GamePlay.wav");
 	Json json = Json::Load("Resources/Texture/UI/UI.json");
 
-	UI *testUI = new UI();
+	UI* testUI = new UI();
 	(*testUI) << json;
 	AddUI(testUI);
 
@@ -145,18 +146,18 @@ void GameScene_::Update() {
 
 #pragma region ConfigUI
 
-	UI *selectUI = nullptr;
+	UI* selectUI = nullptr;
 
 
 	if (Novice::IsPressMouse(0)) {
-		uiList["Main"]->ForEach([&selectUI](UI *ui) { if (IsPositionInBox(ui->position, ui->radius * 2, Mouse::GetMouse() * Camera::UIvpVpMatrix.Inverse())) { selectUI = ui; }});
+		uiList["Main"]->ForEach([&selectUI](UI* ui) { if (IsPositionInBox(ui->position, ui->radius * 2, Mouse::GetMouse() * Camera::UIvpVpMatrix.Inverse())) { selectUI = ui; }});
 	}
 	if (selectUI) {
 		if (Keyboard::IsPress(DIK_LCONTROL)) {
 			selectUI->position += Mouse::GetDirection();
 		}
 		else {
-			selectUI->ForEach([](UI *ui) {ui->position += Mouse::GetDirection(); });
+			selectUI->ForEach([](UI* ui) {ui->position += Mouse::GetDirection(); });
 		}
 	}
 
@@ -176,17 +177,21 @@ void GameScene_::Update() {
 #pragma endregion
 
 	if (sceneFlame % 50 == 0) {
-		Enemy *newEnemy = new Enemy;
+		Enemy* newEnemy = new Enemy;
 		newEnemy->SetPosition(PlayerManager::GetInstance().GetPlayer().GetPosition() + Polar2Rectangular(Polar{ GetRandom(300,560),GetRandom(0,360) }));
 		newEnemy->SetRadius(32);
 		EntityManager::GetInstance().AddEntity(newEnemy);
+	}
+
+	if (Keyboard::IsTrigger(DIK_R)) {
+		Enemy::SetEnemyAlive(true);
 	}
 
 	PlayerManager::GetInstance().Input();
 	PlayerManager::GetInstance().Update();
 	EntityManager::GetInstance().Update();
 
-	GaugeUI *gauge = (GaugeUI *)((*uiList["Main"])["Bar"]);
+	GaugeUI* gauge = (GaugeUI*)((*uiList["Main"])["Bar"]);
 	if (gauge->GetLength() != PlayerManager::GetInstance().GetPlayer().GetHP()) {
 		gauge->StartEase(32);
 		gauge->SetLength(PlayerManager::GetInstance().GetPlayer().GetHP());
@@ -205,14 +210,19 @@ void GameScene_::Draw() const {
 	wchar_t kill[32];
 	swprintf_s(kill, L"Kill : %3d", Score::GetInstance().GetScore());
 
+	wchar_t enemyCount[32];
+	swprintf_s(enemyCount, L"EnemyCount : %d", Enemy::GetCount());
+
 	EntityManager::GetInstance().Draw();
 	PlayerManager::GetInstance().Draw();
 
 	String::DrawString(time, "Default", TopLeft - Vector2{ 0,+12 }*2, Vector2{ 24,24 }*2, { 0,0.5f }, 0xFFFFFFFF);
 	String::DrawString(kill, "Default", TopLeft - Vector2{ 0,+12 + 24 }*2, Vector2{ 24,24 }*2, { 0,0.5f }, 0xFFFFFFFF);
+	String::DrawString(enemyCount, "Default", TopLeft - Vector2{ 0,+12 + 24 * 2 }*2, Vector2{ 24,24 }*2, { 0,0.5f }, 0xFFFFFFFF);
 
 	String::DrawString(L"WASD  : ‚¢‚Ç‚¤", "Default", DownLeft + Vector2{ 0,+12 }, { 24,24 }, { 0,0.5f }, 0xFFFFFFFF);
 	String::DrawString(L"SPACE : ‚Í‚Á‚µ‚á", "Default", DownLeft + Vector2{ 0,+12 + 24 }, { 24,24 }, { 0,0.5f }, 0xFFFFFFFF);
+	String::DrawString(L"R     : ‚è‚¹‚Á‚Æ", "Default", DownLeft + Vector2{ 0,+12 + 24 * 2 }, { 24,24 }, { 0,0.5f }, 0xFFFFFFFF);
 	DrawUI();
 }
 

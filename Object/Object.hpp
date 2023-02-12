@@ -7,14 +7,14 @@ class Box
 {
 public:
 	Box();
-	Box(const Vector2 &position, const Vector2 &radius);
+	Box(const Vector2& position, const Vector2& radius);
 
 	inline Vector2 GetPosition() { return position; }
 	inline Vector2 GetRadius() { return radius; }
 
-	inline void SetPosition(const Vector2 &position) { this->position = position; }
+	inline void SetPosition(const Vector2& position) { this->position = position; }
 
-	inline void SetRadius(const Vector2 &radius) { this->radius = radius; }
+	inline void SetRadius(const Vector2& radius) { this->radius = radius; }
 public:
 	Vector2 position;
 	Vector2 radius;
@@ -26,14 +26,14 @@ class Ball
 public:
 
 	Ball();
-	Ball(const Vector2 &position, const Vector2 &radius);
+	Ball(const Vector2& position, const Vector2& radius);
 
 	inline Vector2 GetPosition() { return position; }
 	inline float GetRadius() { return radius.x; }
 
-	inline void SetPosition(const Vector2 &position) { this->position = position; }
+	inline void SetPosition(const Vector2& position) { this->position = position; }
 
-	inline void SetRadius(const float &radius) { this->radius = { radius,radius }; }
+	inline void SetRadius(const float& radius) { this->radius = { radius,radius }; }
 
 public:
 	Vector2 position;
@@ -44,7 +44,7 @@ public:
 class Line {
 public:
 	Line() : start_(ZeroVector2), end_(ZeroVector2) {};
-	Line(const Vector2 &start_, const Vector2 &end_) : start_(start_), end_(end_) {};
+	Line(const Vector2& start_, const Vector2& end_) : start_(start_), end_(end_) {};
 	Vector2 start_;
 	Vector2 end_;
 
@@ -58,13 +58,13 @@ public:
 class Ray {
 public:
 	Ray() : origin(ZeroVector2), direction(ZeroVector2) {};
-	Ray(const Vector2 &origin, const Vector2 &direction) : origin(origin), direction(direction) {};
+	Ray(const Vector2& origin, const Vector2& direction) : origin(origin), direction(direction) {};
 	Vector2 origin;
 	Vector2 direction;
 
 	inline Ray Nomalize() const { return { origin,direction.Nomalize() }; }
 	// 長さ * スカラー
-	inline Ray operator*(const float &s) const { return { origin,direction * s }; }
+	inline Ray operator*(const float& s) const { return { origin,direction * s }; }
 
 	inline Vector2 GetEnd() const { return direction + origin; }
 
@@ -77,21 +77,23 @@ class Object :public Ball
 {
 public:
 	Object();
-	Object(const Vector2 &position, const Vector2 &radius, const float &scale);
+	Object(const Vector2& position, const Vector2& radius, const float& scale);
 
-	Object &operator=(const SpriteClass &other) {
+	Object& operator=(const SpriteClass& other) {
 		spriteBox = (other);
 	}
 
-	Object &operator=(const SpriteBox &other) {
+	Object& operator=(const SpriteBox& other) {
 		spriteBox = (other);
 	}
+
+	virtual ~Object() {}
 
 
 	virtual	void Draw() const;
 
-	const SpriteBox &GetSpriteBox() const { return spriteBox; }
-	SpriteBox &GetSpriteBox() { return spriteBox; }
+	const SpriteBox& GetSpriteBox() const { return spriteBox; }
+	SpriteBox& GetSpriteBox() { return spriteBox; }
 
 
 	Vector2 velocity;
@@ -112,7 +114,7 @@ public:
 private:
 
 	Vector2 prePosition;
-	
+
 	// テクスチャ描画ボックス
 	SpriteBox spriteBox;
 };

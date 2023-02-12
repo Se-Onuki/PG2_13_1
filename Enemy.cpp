@@ -7,16 +7,21 @@
 #include "EntityManager.hpp"
 #include "Render/Camera.hpp"
 
+bool Enemy::enemyAlive = true;
+int Enemy::enemyCount = 0;
+
 Enemy::Enemy()
 {
+	GetSpriteBox().Init("./Resources/Texture/TestTexture/Circle.png", 32, 32, 1);
+	enemyCount++;
 
-	GetSpriteBox().LoadTexture("./Resources/Texture/TestTexture/Circle.png");
-	GetSpriteBox().Init(32, 32, 1);
+	isAlive = enemyAlive;
 }
 
 Enemy::~Enemy()
 {
-
+	enemyCount--;
+	enemyAlive = false;
 }
 
 void Enemy::Update()
@@ -27,6 +32,11 @@ void Enemy::Update()
 		isAlive = false;
 		PlayerManager::GetInstance().GetPlayer().SetHP(PlayerManager::GetInstance().GetPlayer().GetHP() - 0.25f);
 		Camera::Shake({ 5,5 }, 10);
+	}
+
+	if (!isAlive || !enemyAlive) {	//　本来、エンティティ全体のisAliveを変更するべきだが、弾やプレイヤーなどのエンティティに干渉してしまうため、エネミーのみのenemyAliveメンバ変数を実装した。
+		isAlive = false;
+		enemyAlive = false;
 	}
 }
 
