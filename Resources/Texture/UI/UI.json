@@ -1,0 +1,62 @@
+{
+    "class": "class UI",
+    "name": "Main",
+    "children": [
+        {
+            "class": "class UI",
+            "name": "BarBody",
+            "position": {
+                "x": 640,
+                "y": 50
+            },
+            "children": [
+                {
+                    "class": "class GaugeUI",
+                    "name": "Bar",
+                    "children": [],
+                    "position": {
+                        "x": 640,
+                        "y": 50
+                    },
+                    "radius": {
+                        "x": 150,
+                        "y": 30
+                    },
+                    "spriteBox": {
+                        "imagePath": "",
+                        "width": 1,
+                        "height": 1,
+                        "maxFlame": 1,
+                        "color": 16711935
+                    }
+                }
+            ],
+            "radius": {
+                "x": 160,
+                "y": 40
+            },
+            "spriteBox": {
+                "imagePath": "",
+                "width": 1,
+                "height": 1,
+                "maxFlame": 1,
+                "color": 255
+            }
+        }
+    ],
+    "position": {
+        "x": 69,
+        "y": 659
+    },
+    "radius": {
+        "x": 0,
+        "y": 0
+    },
+    "spriteBox": {
+        "imagePath": "",
+        "width": 64,
+        "height": 64,
+        "maxFlame": 8,
+        "color": -1
+    }
+}
